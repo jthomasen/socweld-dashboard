@@ -24,6 +24,11 @@ h1 { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
 .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 .note { font-size: 11px; color: #aaa; margin-top: 10px; border-top: 0.5px solid #e0deda; padding-top: 8px; }
 button:focus { outline: none; }
+.np-company { font-size:12px; font-weight:600; color:#2c2c2a; margin:12px 0 4px; padding-bottom:4px; border-bottom:1px solid #e8e7e3; }
+.np-company:first-child { margin-top:0; }
+.np-row { display:flex; justify-content:space-between; align-items:center; padding:5px 0; border-bottom:0.5px solid #f0ede8; }
+.np-name { font-size:12px; color:#444; flex:1; padding-right:12px; }
+.np-pts { font-size:11px; color:#1D9E75; font-weight:500; white-space:nowrap; }
 </style>
 </head>
 <body>
@@ -333,5 +338,14 @@ function updateBtnStyles() {
   });
 }
 </script>
+
+<div class="panel-full" style="margin-top:16px;">
+  <div class="section-label">Nye projekter i Maj — ikke aktive i Apr</div>
+  <div style="max-height:400px; overflow-y:auto;">
+    <div class="np-company">AGJ</div><div class="np-row"><span class="np-name">501284 - PPV - SCC4103 - Loading KY</span><span class="np-pts">42 pkt</span></div>
+  </div>
+  <p class="note">Projekter med svejsepunkter i indeværende måned, men nul i forrige måned.</p>
+</div>
+
 </body>
 </html>
