@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOCWeld Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #2c2c2a; padding: 24px; }
+h1 { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
+.subtitle { font-size: 13px; color: #888; margin-bottom: 20px; }
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 16px; }
+.kpi { background: #fff; border-radius: 10px; padding: 16px; border: 0.5px solid #d3d1c7; }
+.kpi-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
+.kpi-value { font-size: 24px; font-weight: 500; line-height: 1.1; }
+.kpi-sub { font-size: 12px; color: #888; margin-top: 4px; }
+.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.panel { background: #fff; border-radius: 12px; padding: 18px; border: 0.5px solid #d3d1c7; }
+.panel-full { background: #fff; border-radius: 12px; padding: 18px; border: 0.5px solid #d3d1c7; margin-bottom: 16px; }
+.section-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-bottom: 10px; }
+.legend-row { display: flex; gap: 14px; margin-bottom: 10px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #5f5e5a; }
+.legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.note { font-size: 11px; color: #aaa; margin-top: 10px; border-top: 0.5px solid #e0deda; padding-top: 8px; }
+button:focus { outline: none; }
+</style>
+</head>
+<body>
+<style>
+#pw-gate {
+  position:fixed; inset:0; background:#f5f4f0;
+  display:flex; align-items:center; justify-content:center;
+  z-index:9999; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+#pw-box {
+  background:#fff; border:0.5px solid #d3d1c7; border-radius:14px;
+  padding:36px 40px; width:320px; text-align:center; box-shadow:0 4px 24px rgba(0,0,0,0.08);
+}
+#pw-box h2 { font-size:16px; font-weight:500; margin-bottom:6px; color:#2c2c2a; }
+#pw-box p  { font-size:13px; color:#888; margin-bottom:20px; }
+#pw-input {
+  width:100%; padding:10px 14px; border:1px solid #d3d1c7; border-radius:8px;
+  font-size:15px; outline:none; margin-bottom:10px; color:#2c2c2a;
+  transition:border 0.15s;
+}
+#pw-input:focus { border-color:#378ADD; }
+#pw-btn {
+  width:100%; padding:10px; background:#2c2c2a; color:#fff;
+  border:none; border-radius:8px; font-size:14px; font-weight:500;
+  cursor:pointer; transition:opacity 0.15s;
+}
+#pw-btn:hover { opacity:0.85; }
+#pw-err { font-size:12px; color:#D85A30; margin-top:8px; min-height:18px; }
+</style>
+
+<div id="pw-gate">
+  <div id="pw-box">
+    <h2>SOCWeld Dashboard</h2>
+    <p>Indtast adgangskode for at fortsætte</p>
+    <input id="pw-input" type="password" placeholder="Adgangskode"
+           onkeydown="if(event.key==='Enter') checkPw();" autofocus>
+    <button id="pw-btn" onclick="checkPw()">Log ind</button>
+    <div id="pw-err"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const CORRECT = "Svejsning2026";
+  const KEY = 'socweld_auth';
+  if (sessionStorage.getItem(KEY) === CORRECT) {
+    document.getElementById('pw-gate').style.display = 'none';
+  }
+  window.checkPw = function() {
+    const val = document.getElementById('pw-input').value;
+    if (val === CORRECT) {
+      sessionStorage.setItem(KEY, CORRECT);
+      document.getElementById('pw-gate').style.display = 'none';
+    } else {
+      document.getElementById('pw-err').textContent = 'Forkert adgangskode — prøv igen.';
+      document.getElementById('pw-input').value = '';
+      document.getElementById('pw-input').focus();
+    }
+  };
+})();
+</script>
+
+
+<h1>SOCWeld — Svejsepunkter Dashboard</h1>
+<p class="subtitle">Sidst opdateret: <strong>2026-05-05</strong> · Løbende 12 måneders sammenligning</p>
+
+<div class="kpi-grid">
+  <div class="kpi">
+    <div class="kpi-label">Seneste 12 mdr</div>
+    <div class="kpi-value">106946</div>
+    <div class="kpi-sub">Jun 25–Maj 26</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">2026 ÅTD</div>
+    <div class="kpi-value">38452</div>
+    <div class="kpi-sub">Jan – 05 Maj 2026</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Aktive kunder 2026</div>
+    <div class="kpi-value">15</div>
+    <div class="kpi-sub">Kunder med aktivitet i 2026</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Største kunde 2026</div>
+    <div class="kpi-value" style="font-size:15px;padding-top:4px;">Semco Maritime</div>
+    <div class="kpi-sub">7533 pkt ÅTD</div>
+  </div>
+</div>
+
+<div class="panel-full">
+  <div class="section-label">Månedlig aktivitet — svejsepunkter</div>
+  <div class="legend-row">
+    <span class="legend-item"><span class="legend-dot" style="background:#378ADD"></span>2025</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>2026</span>
+  </div>
+  <div style="position:relative;height:200px">
+    <canvas id="trendChart"></canvas>
+  </div>
+</div>
+
+<div class="panel-full">
+  <div class="section-label">Aktive kunder pr. måned</div>
+  <div class="legend-row">
+    <span class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>Stigning</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#D85A30"></span>Fald</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#B4B2A9"></span>Uændret</span>
+  </div>
+  <div style="position:relative;height:220px">
+    <canvas id="customersChart"></canvas>
+  </div>
+  <p class="note">En kunde tæller med i en måned hvis der er registreret mindst ét svejsepunkt.</p>
+</div>
+
+<div class="panel-full">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div class="section-label" style="margin-bottom:4px;">Maj — daglig aktivitet vs samme måned sidste år</div>
+      <div class="legend-row" style="margin-bottom:0;">
+        <span class="legend-item"><span class="legend-dot" style="background:#B4B2A9"></span>Maj 2025</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>Maj 2026 ÅTD</span>
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px;">Vs. samme periode 2025 (dag 1–5)</div>
+      <div style="font-size:22px;font-weight:500;color:#D85A30;">↓571 pkt</div>
+      <div style="font-size:11px;color:#888;">405 pkt i 2026 vs 976 pkt i 2025</div>
+    </div>
+  </div>
+  <div style="position:relative;height:220px">
+    <canvas id="dailyChart"></canvas>
+  </div>
+  <p class="note">Grå = Maj 2025 (fuld måned). Grøn = Maj 2026 (kun registrerede dage).</p>
+</div>
+
+<div class="chart-row">
+  <div class="panel">
+    <div class="section-label">Top 10 kunder — 2026 ÅTD</div>
+    <div style="position:relative;height:340px">
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="section-label">Måned vs samme måned sidste år — top 8 kunder</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
+      <div class="legend-row" style="margin-bottom:0;">
+        <span class="legend-item"><span class="legend-dot" style="background:#B4B2A9"></span>2025</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>2026</span>
+      </div>
+      <div style="display:flex;gap:6px;" id="monthBtns"></div>
+    </div>
+    <div style="position:relative;height:310px">
+      <canvas id="compareChart"></canvas>
+    </div>
+    <p class="note" id="compareNote"></p>
+  </div>
+</div>
+
+<script>
+const gridColor = 'rgba(0,0,0,0.07)';
+const labelColor = '#888780';
+const textColor = '#444';
+const monthNames = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'Maj','06':'Jun','07':'Jul','08':'Aug','09':'Sep','10':'Okt','11':'Nov','12':'Dec'};
+
+const trendLabels = ["Mar 25", "Apr 25", "Maj 25", "Jun 25", "Jul 25", "Aug 25", "Sep 25", "Okt 25", "Nov 25", "Dec 25", "Jan 26", "Feb 26", "Mar 26", "Apr 26", "Maj 26"];
+const trendVals   = [8710, 9963, 11581, 11703, 14249, 10443, 11430, 8603, 6651, 5820, 11496, 7427, 12631, 6088, 405];
+const trend2025   = [true, true, true, true, true, true, true, true, true, true, false, false, false, false, false];
+const trendColors = trendVals.map((_,i) => trend2025[i] ? '#378ADD' : '#1D9E75');
+
+new Chart(document.getElementById('trendChart'), {
+  type: 'bar',
+  data: { labels: trendLabels, datasets: [{ data: trendVals, backgroundColor: trendColors, borderRadius: 3, borderSkipped: false }] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + ctx.parsed.y.toLocaleString('da-DK') + ' pkt' } } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: labelColor, font: { size: 10 }, autoSkip: false, maxRotation: 45 } },
+      y: { grid: { color: gridColor }, ticks: { color: labelColor, font: { size: 11 }, callback: v => (v/1000).toFixed(0)+'k' }, border: { dash: [3,3] } }
+    }
+  }
+});
+
+const wfLabels = ["Mar 25", "Apr 25", "Maj 25", "Jun 25", "Jul 25", "Aug 25", "Sep 25", "Okt 25", "Nov 25", "Dec 25", "Jan 26", "Feb 26", "Mar 26", "Apr 26", "Maj 26"];
+const wfCounts = [12, 12, 14, 15, 12, 13, 13, 15, 13, 15, 14, 14, 15, 14, 8];
+const wfChanges = wfCounts.map((v,i) => i===0 ? v : v - wfCounts[i-1]);
+const wfFloats  = wfCounts.map((v,i) => i===0 ? [0,v] : v >= wfCounts[i-1] ? [wfCounts[i-1],v] : [v,wfCounts[i-1]]);
+const wfColors  = wfCounts.map((v,i) => { if(i===0) return '#378ADD'; const c=wfChanges[i]; return c===0?'#B4B2A9':c>0?'#1D9E75':'#D85A30'; });
+
+const waterfallConnector = {
+  id: 'wfc',
+  afterDatasetsDraw(chart) {
+    const ctx = chart.ctx, meta = chart.getDatasetMeta(0);
+    ctx.save(); ctx.strokeStyle='#ccc'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+    for(let i=0;i<meta.data.length-1;i++) {
+      const bar=meta.data[i], nb=meta.data[i+1];
+      const y=chart.scales.y.getPixelForValue(wfCounts[i]);
+      ctx.beginPath(); ctx.moveTo(bar.x+bar.width/2,y); ctx.lineTo(nb.x-nb.width/2,y); ctx.stroke();
+    }
+    ctx.restore();
+  }
+};
+
+new Chart(document.getElementById('customersChart'), {
+  type: 'bar', plugins: [waterfallConnector],
+  data: { labels: wfLabels, datasets: [{ data: wfFloats, backgroundColor: wfColors, borderRadius: 3, borderSkipped: false, barPercentage: 0.45, categoryPercentage: 0.7 }] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => { const i=ctx.dataIndex,c=wfChanges[i],s=c>0?'+':''; return i===0?' Start: '+wfCounts[i]+' kunder':' '+wfCounts[i]+' kunder ('+s+c+' vs forrige)'; } } } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: labelColor, font: { size: 10 }, autoSkip: false, maxRotation: 45 } },
+      y: { grid: { color: gridColor }, min: 0, max: 22, ticks: { color: labelColor, font: { size: 11 }, stepSize: 2 }, border: { dash: [3,3] } }
+    }
+  }
+});
+
+const dailyPrev = [205, 319, 23, 2, 427, 441, 418, 1516, 205, 74, 42, 457, 368, 409, 586, 157, 7, 23, 601, 645, 503, 444, 380, 0, 2, 1021, 1070, 723, 89, 237, 187];
+const dailyCur  = [44, 46, null, 275, 40, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
+const days = Array.from({length:31},(_,i)=>i+1);
+
+new Chart(document.getElementById('dailyChart'), {
+  type: 'bar',
+  data: { labels: days, datasets: [
+    { label: 'Maj 2025', data: dailyPrev, backgroundColor: 'rgba(180,178,169,0.5)', borderColor: '#B4B2A9', borderWidth:1, borderRadius:2, borderSkipped:false, order:2 },
+    { label: 'Maj 2026',  data: dailyCur,  backgroundColor: '#1D9E75', borderRadius:2, borderSkipped:false, order:1 }
+  ]},
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display:false }, tooltip: { callbacks: { title: ctx=>'Dag '+ctx[0].label, label: ctx=>' '+ctx.dataset.label+': '+(ctx.parsed.y??0).toLocaleString('da-DK')+' pkt' } } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: labelColor, font: { size:10 }, callback: (_,i)=>i+1 } },
+      y: { grid: { color: gridColor }, ticks: { color: labelColor, font: { size:11 }, callback: v=>v>=1000?(v/1000).toFixed(0)+'k':v }, border: { dash:[3,3] } }
+    }
+  }
+});
+
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: { labels: ["Semco Maritime", "AGJ", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg", "Verdo Energy Systems", "2Water"], datasets: [{ data: [7533, 7476, 6240, 4838, 4555, 2949, 1480, 807, 677, 641], backgroundColor:'#1D9E75', borderRadius:3, borderSkipped:false }] },
+  options: {
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins: { legend:{display:false}, tooltip:{callbacks:{label:ctx=>' '+ctx.parsed.x.toLocaleString('da-DK')+' pkt'}} },
+    scales: {
+      x: { grid:{color:gridColor}, ticks:{color:labelColor,font:{size:11},callback:v=>(v/1000).toFixed(1)+'k'}, border:{dash:[3,3]} },
+      y: { grid:{display:false}, ticks:{color:textColor,font:{size:11}} }
+    }
+  }
+});
+
+const top8 = ["Semco Maritime", "AGJ", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg"];
+const yoyData2025 = {"03": [2, 1104, 4168, 958, 117, 246, 258, 0], "04": [1, 957, 4147, 2247, 443, 253, 370, 0], "05": [185, 847, 4093, 1624, 202, 431, 291, 0]};
+const yoyData2026 = {"03": [1155, 2175, 1387, 4123, 1434, 1077, 640, 0], "04": [38, 1358, 1484, 173, 1176, 299, 188, 799], "05": [0, 125, 61, 0, 26, 142, 44, 1]};
+const yoyButtons  = [{"label": "Mar", "key": "03"}, {"label": "Apr", "key": "04"}, {"label": "Maj", "key": "05"}];
+const yoyNotes    = {"03": "Mar 2026 vs Mar 2025 \u2014 komplet sammenligning.", "04": "Apr 2026 vs Apr 2025 \u2014 komplet sammenligning.", "05": "Maj 2026 (delvis)"};
+
+let curMonth = '05';
+
+const btnContainer = document.getElementById('monthBtns');
+yoyButtons.forEach(b => {
+  const btn = document.createElement('button');
+  btn.id = 'btn-'+b.key;
+  btn.textContent = b.label + (b.key===curMonth?' ●':'');
+  btn.style.cssText = 'font-size:11px;padding:3px 10px;border-radius:5px;cursor:pointer;';
+  btn.onclick = () => setMonth(b.key);
+  btnContainer.appendChild(btn);
+});
+
+const compareChart = new Chart(document.getElementById('compareChart'), {
+  type:'bar',
+  data:{ labels:top8, datasets:[
+    {label:'2025', data:yoyData2025[curMonth]||[], backgroundColor:'#B4B2A9', borderRadius:2},
+    {label:'2026', data:yoyData2026[curMonth]||[], backgroundColor:'#1D9E75', borderRadius:2}
+  ]},
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>' '+ctx.dataset.label+': '+ctx.parsed.x.toLocaleString('da-DK')+' pkt'}}},
+    scales:{
+      x:{grid:{color:gridColor},ticks:{color:labelColor,font:{size:11},callback:v=>(v/1000).toFixed(1)+'k'},border:{dash:[3,3]}},
+      y:{grid:{display:false},ticks:{color:textColor,font:{size:11}}}
+    }
+  }
+});
+
+document.getElementById('compareNote').textContent = yoyNotes[curMonth] || '';
+updateBtnStyles();
+
+function setMonth(m) {
+  curMonth = m;
+  compareChart.data.datasets[0].data = yoyData2025[m]||[];
+  compareChart.data.datasets[1].data = yoyData2026[m]||[];
+  compareChart.update();
+  document.getElementById('compareNote').textContent = yoyNotes[m]||'';
+  updateBtnStyles();
+}
+
+function updateBtnStyles() {
+  yoyButtons.forEach(b => {
+    const btn = document.getElementById('btn-'+b.key);
+    if(!btn) return;
+    if(b.key===curMonth) {
+      btn.style.border='1px solid #378ADD'; btn.style.background='#EBF4FF';
+      btn.style.color='#1a5fa8'; btn.style.fontWeight='500';
+      btn.textContent = b.label+' ●';
+    } else {
+      btn.style.border='1px solid #d3d1c7'; btn.style.background='#fff';
+      btn.style.color='#444'; btn.style.fontWeight='normal';
+      btn.textContent = b.label;
+    }
+  });
+}
+</script>
+</body>
+</html>
