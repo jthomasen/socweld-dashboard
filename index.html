@@ -93,7 +93,7 @@ button:focus { outline: none; }
 
 
 <h1>SOCWeld — Svejsepunkter Dashboard</h1>
-<p class="subtitle">Sidst opdateret: <strong>2026-05-06 14:59</strong> · Løbende 12 måneders sammenligning</p>
+<p class="subtitle">Sidst opdateret: <strong>2026-05-06 15:04</strong> · Løbende 12 måneders sammenligning</p>
 <!-- last_updated format: YYYY-MM-DD HH:MM -->
 
 <div class="kpi-grid">
@@ -105,7 +105,7 @@ button:focus { outline: none; }
   <div class="kpi">
     <div class="kpi-label">2026 ÅTD</div>
     <div class="kpi-value">39202</div>
-    <div class="kpi-sub">Jan – 06 14:59 Maj 2026</div>
+    <div class="kpi-sub">Jan – 06 15:04 Maj 2026</div>
   </div>
   <div class="kpi">
     <div class="kpi-label">Aktive kunder 2026</div>
@@ -266,7 +266,7 @@ new Chart(document.getElementById('dailyChart'), {
 
 new Chart(document.getElementById('barChart'), {
   type: 'bar',
-  data: { labels: ["AGJ", "Semco Maritime", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg", "Verdo Energy Systems", "2Water", "Soft og Teknik", "Olsa", "Erlands Smedie & Tekni", "Burmeister & Wain Scan", "Alfa Laval Nakskov", "Stage One Computing", "S\u00f8gaard Food & Pharma"], datasets: [{ data: [7697, 7533, 6251, 4838, 4627, 3015, 1480, 807, 677, 640, 422, 157, 98, 97, 71, 7, 3], backgroundColor:'#1D9E75', borderRadius:3, borderSkipped:false }] },
+  data: { labels: ["AGJ", "Semco Maritime", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg", "Verdo Energy Systems", "2Water", "Soft og Teknik", "Olsa", "Erlands Smedie & Tekni", "Burmeister & Wain Scan", "Alfa Laval Nakskov"], datasets: [{ data: [7697, 7533, 6251, 4838, 4627, 3015, 1480, 807, 677, 640, 422, 157, 98, 97, 71], backgroundColor:'#1D9E75', borderRadius:3, borderSkipped:false }] },
   options: {
     indexAxis:'y', responsive:true, maintainAspectRatio:false,
     plugins: { legend:{display:false}, tooltip:{callbacks:{label:ctx=>' '+ctx.parsed.x.toLocaleString('da-DK')+' pkt'}} },
@@ -277,9 +277,9 @@ new Chart(document.getElementById('barChart'), {
   }
 });
 
-const top8 = ["AGJ", "Semco Maritime", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg", "Verdo Energy Systems", "2Water", "Soft og Teknik", "Olsa", "Erlands Smedie & Tekni", "Burmeister & Wain Scan", "Alfa Laval Nakskov", "Stage One Computing", "S\u00f8gaard Food & Pharma"];
-const yoyData2025 = {"03": [1104, 2, 4168, 958, 117, 246, 258, 0, 0, 294, 950, 0, 0, 137, 0, 0, 57], "04": [957, 1, 4147, 2247, 443, 253, 370, 0, 0, 374, 173, 0, 43, 614, 0, 0, 0], "05": [847, 185, 4093, 1624, 202, 431, 291, 0, 0, 1030, 2036, 0, 23, 637, 3, 0, 0]};
-const yoyData2026 = {"03": [2174, 1155, 1387, 4123, 1434, 1077, 640, 0, 262, 40, 255, 20, 0, 7, 51, 2, 3], "04": [1357, 38, 1484, 173, 1176, 299, 188, 799, 200, 206, 149, 14, 0, 0, 1, 1, 0], "05": [348, 0, 72, 0, 98, 208, 44, 1, 2, 1, 0, 3, 0, 1, 0, 4, 0]};
+const top8 = ["AGJ", "Semco Maritime", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg", "Verdo Energy Systems", "2Water", "Soft og Teknik", "Olsa", "Erlands Smedie & Tekni", "Burmeister & Wain Scan", "Alfa Laval Nakskov"];
+const yoyData2025 = {"03": [1104, 2, 4168, 958, 117, 246, 258, 0, 0, 294, 950, 0, 0, 137, 0], "04": [957, 1, 4147, 2247, 443, 253, 370, 0, 0, 374, 173, 0, 43, 614, 0], "05": [847, 185, 4093, 1624, 202, 431, 291, 0, 0, 1030, 2036, 0, 23, 637, 3]};
+const yoyData2026 = {"03": [2174, 1155, 1387, 4123, 1434, 1077, 640, 0, 262, 40, 255, 20, 0, 7, 51], "04": [1357, 38, 1484, 173, 1176, 299, 188, 799, 200, 206, 149, 14, 0, 0, 1], "05": [348, 0, 72, 0, 98, 208, 44, 1, 2, 1, 0, 3, 0, 1, 0]};
 const yoyButtons  = [{"label": "Mar", "key": "03"}, {"label": "Apr", "key": "04"}, {"label": "Maj", "key": "05"}];
 const yoyNotes    = {"03": "Mar 2026 vs Mar 2025 \u2014 komplet sammenligning.", "04": "Apr 2026 vs Apr 2025 \u2014 komplet sammenligning.", "05": "Maj 2026 (delvis)"};
 
