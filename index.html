@@ -98,12 +98,12 @@ button:focus { outline: none; }
 <div class="kpi-grid">
   <div class="kpi">
     <div class="kpi-label">Seneste 12 mdr</div>
-    <div class="kpi-value">107012</div>
+    <div class="kpi-value">107166</div>
     <div class="kpi-sub">Jun 25–Maj 26</div>
   </div>
   <div class="kpi">
     <div class="kpi-label">2026 ÅTD</div>
-    <div class="kpi-value">38588</div>
+    <div class="kpi-value">38900</div>
     <div class="kpi-sub">Jan – 06 Maj 2026</div>
   </div>
   <div class="kpi">
@@ -113,8 +113,8 @@ button:focus { outline: none; }
   </div>
   <div class="kpi">
     <div class="kpi-label">Største kunde 2026</div>
-    <div class="kpi-value" style="font-size:15px;padding-top:4px;">Semco Maritime</div>
-    <div class="kpi-sub">7533 pkt ÅTD</div>
+    <div class="kpi-value" style="font-size:15px;padding-top:4px;">AGJ</div>
+    <div class="kpi-sub">7607 pkt ÅTD</div>
   </div>
 </div>
 
@@ -152,9 +152,9 @@ button:focus { outline: none; }
       </div>
     </div>
     <div style="text-align:right;">
-      <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px;">Vs. samme periode 2025 (dag 1–5)</div>
-      <div style="font-size:22px;font-weight:500;color:#D85A30;">↓502 pkt</div>
-      <div style="font-size:11px;color:#888;">474 pkt i 2026 vs 976 pkt i 2025</div>
+      <div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:3px;">Vs. samme periode 2025 (dag 1–6)</div>
+      <div style="font-size:22px;font-weight:500;color:#D85A30;">↓787 pkt</div>
+      <div style="font-size:11px;color:#888;">630 pkt i 2026 vs 1417 pkt i 2025</div>
     </div>
   </div>
   <div style="position:relative;height:220px">
@@ -193,7 +193,7 @@ const textColor = '#444';
 const monthNames = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'Maj','06':'Jun','07':'Jul','08':'Aug','09':'Sep','10':'Okt','11':'Nov','12':'Dec'};
 
 const trendLabels = ["Mar 25", "Apr 25", "Maj 25", "Jun 25", "Jul 25", "Aug 25", "Sep 25", "Okt 25", "Nov 25", "Dec 25", "Jan 26", "Feb 26", "Mar 26", "Apr 26", "Maj 26"];
-const trendVals   = [8710, 9963, 11581, 11703, 14248, 10443, 11430, 8603, 6651, 5820, 11496, 7427, 12631, 6086, 474];
+const trendVals   = [8710, 9963, 11581, 11703, 14247, 10442, 11430, 8603, 6651, 5820, 11496, 7427, 12631, 6086, 630];
 const trend2025   = [true, true, true, true, true, true, true, true, true, true, false, false, false, false, false];
 const trendColors = trendVals.map((_,i) => trend2025[i] ? '#378ADD' : '#1D9E75');
 
@@ -244,7 +244,7 @@ new Chart(document.getElementById('customersChart'), {
 });
 
 const dailyPrev = [205, 319, 23, 2, 427, 441, 418, 1516, 205, 74, 42, 457, 368, 409, 586, 157, 7, 23, 601, 645, 503, 444, 380, 0, 2, 1021, 1070, 723, 89, 237, 187];
-const dailyCur  = [44, 46, null, 275, 109, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
+const dailyCur  = [44, 46, null, 275, 129, 136, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null];
 const days = Array.from({length:31},(_,i)=>i+1);
 
 new Chart(document.getElementById('dailyChart'), {
@@ -265,7 +265,7 @@ new Chart(document.getElementById('dailyChart'), {
 
 new Chart(document.getElementById('barChart'), {
   type: 'bar',
-  data: { labels: ["Semco Maritime", "AGJ", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg", "Verdo Energy Systems", "2Water"], datasets: [{ data: [7533, 7513, 6242, 4838, 4566, 2966, 1480, 807, 677, 640], backgroundColor:'#1D9E75', borderRadius:3, borderSkipped:false }] },
+  data: { labels: ["AGJ", "Semco Maritime", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg", "Verdo Energy Systems", "2Water"], datasets: [{ data: [7607, 7533, 6244, 4838, 4577, 3015, 1480, 807, 677, 640], backgroundColor:'#1D9E75', borderRadius:3, borderSkipped:false }] },
   options: {
     indexAxis:'y', responsive:true, maintainAspectRatio:false,
     plugins: { legend:{display:false}, tooltip:{callbacks:{label:ctx=>' '+ctx.parsed.x.toLocaleString('da-DK')+' pkt'}} },
@@ -276,9 +276,9 @@ new Chart(document.getElementById('barChart'), {
   }
 });
 
-const top8 = ["Semco Maritime", "AGJ", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg"];
-const yoyData2025 = {"03": [2, 1104, 4168, 958, 117, 246, 258, 0], "04": [1, 957, 4147, 2247, 443, 253, 370, 0], "05": [185, 847, 4093, 1624, 202, 431, 291, 0]};
-const yoyData2026 = {"03": [1155, 2175, 1387, 4123, 1434, 1077, 640, 0], "04": [38, 1358, 1484, 173, 1176, 299, 188, 799], "05": [0, 162, 63, 0, 37, 159, 44, 1]};
+const top8 = ["AGJ", "Semco Maritime", "Beritech Group", "Seasight Solutions", "Flow Technology", "Holmskov Rustfri", "Skanda", "Wicotec Kirkebjerg"];
+const yoyData2025 = {"03": [1104, 2, 4168, 958, 117, 246, 258, 0], "04": [957, 1, 4147, 2247, 443, 253, 370, 0], "05": [847, 185, 4093, 1624, 202, 431, 291, 0]};
+const yoyData2026 = {"03": [2175, 1155, 1387, 4123, 1434, 1077, 640, 0], "04": [1358, 38, 1484, 173, 1176, 299, 188, 799], "05": [256, 0, 65, 0, 48, 208, 44, 1]};
 const yoyButtons  = [{"label": "Mar", "key": "03"}, {"label": "Apr", "key": "04"}, {"label": "Maj", "key": "05"}];
 const yoyNotes    = {"03": "Mar 2026 vs Mar 2025 \u2014 komplet sammenligning.", "04": "Apr 2026 vs Apr 2025 \u2014 komplet sammenligning.", "05": "Maj 2026 (delvis)"};
 
